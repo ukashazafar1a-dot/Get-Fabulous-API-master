@@ -1,0 +1,32 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: rftechnologies
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: API
+
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  memorySize: 2048
+  stage: dev
+  timeout: 15
+  region: eu-central-1
+  # Set SERVERLESS_DEPLOYMENT_BUCKET in the environment if you use a custom bucket.
+  # deploymentBucket:
+  #   name: ${env:SERVERLESS_DEPLOYMENT_BUCKET}
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - http: ANY /{proxy+}
+      - http: ANY /
+    environment:
+      PORT: ${env:PORT, '8000'}
+      SHOPIFY_STORE_DOMAIN: ${env:SHOPIFY_STORE_DOMAIN}
+      SHOPIFY_ACCESS_TOKEN: ${env:SHOPIFY_ACCESS_TOKEN}
+      SHOPIFY_SECRET_KEY: ${env:SHOPIFY_SECRET_KEY}
+      SHOPIFY_LOCATION_ID: ${env:SHOPIFY_LOCATION_ID}
+      CLOUD_NAME: ${env:CLOUD_NAME, ''}
+      CLOUDINARY_API_KEY: ${env:CLOUDINARY_API_KEY, ''}
+      CLOUDINARY_API_SECRET: ${env:CLOUDINARY_API_SECRET, ''}
